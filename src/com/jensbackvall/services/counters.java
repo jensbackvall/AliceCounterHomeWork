@@ -7,28 +7,27 @@ import com.jensbackvall.models.word;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class counters {
-
-    private static String fileName = "/Users/jensbackvall/Desktop/KEAsem3/AliceInWonderland.txt";
-
-    private static BufferedReader readFile = null;
-
-
-
+    
     private static String getTextString() {
         String alice = "";
         try {
-            readFile = new BufferedReader(new FileReader(fileName));
+            URL urlName = new URL("http://www.gutenberg.org/files/11/11-0.txt");
+            BufferedReader readFile = new BufferedReader(new InputStreamReader(urlName.openStream()));
             String currentLine = readFile.readLine();
             while (currentLine != null) {
                 alice = alice + currentLine + " ";
                 currentLine = readFile.readLine();
             }
-        } catch (IOException e) {
+            readFile.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return alice;
@@ -68,6 +67,7 @@ public class counters {
         for (String thisWord: alice.split(" ")) {
             if (!thisWord.equals("")) {
                 thisWord = thisWord.toLowerCase();
+                thisWord = thisWord.replaceAll("--", " ");
                 thisWord = thisWord.replaceAll("'s", "");
                 thisWord = thisWord.replaceAll("[^a-zA-Z]+","");
                 allOccurancesOfAllWords.add(thisWord);
